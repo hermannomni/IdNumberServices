@@ -1,0 +1,9 @@
+api_generateIdNumber:
+    path:     /api/generateIdNumber
+    methods: [GET]
+    defaults: { _controller: IdServicesBundle:IdServices:generateIdNumber }
+
+api_checkIdNumber:
+    path:     /api/checkIdNumber
+    methods: [POST]
+    defaults: { _controller: IdServicesBundle:IdServices:checkIdNumber }

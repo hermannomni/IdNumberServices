@@ -1,0 +1,8 @@
+# API Doc
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /
+
+id_services:
+    resource: "@IdServicesBundle/Resources/config/routing.yml"
+    prefix:   /
