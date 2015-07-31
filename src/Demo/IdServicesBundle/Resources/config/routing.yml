@@ -1,5 +1,5 @@
 api_generateIdNumber:
-    path:     /api/generateIdNumber
+    path:     /api/generateIdNumber/{dateOfBirth}/{gender}/{origin}
     methods: [GET]
     defaults: { _controller: IdServicesBundle:IdServices:generateIdNumber }
 
