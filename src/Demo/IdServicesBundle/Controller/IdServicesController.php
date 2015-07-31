@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Demo\IdServicesBundle\Lib\Exceptions\InvalidFormatException;
 use Demo\IdServicesBundle\Lib\Exceptions\IdValidationException;
 use Demo\IdServicesBundle\Lib\Classes\SaIdNumberValidator\SaIdNumberValidator;
+use Demo\IdServicesBundle\Lib\Classes\SaIdNumberGenerator\SaIdNumberGenerator;
 
 class IdServicesController extends Controller
 {
@@ -31,9 +32,36 @@ class IdServicesController extends Controller
      *  }
      * )
      */
-    public function generateIdNumberAction()
+    public function generateIdNumberAction($dateOfBirth, $gender, $origin)
     {
-        return $this->render('IdServicesBundle:Default:index.html.twig', array('name' => "123"));
+        $data = array();
+        
+        try{
+            $saIdNumberGenerator = new SaIdNumberGenerator($dateOfBirth);
+            $idNumber = $saIdNumberGenerator->generateIdNumber($gender, $origin);
+            $httpCode = 200;
+            $message = "The ID number has been generated successfully";
+            $data = array(
+                "idNumber"  =>  $idNumber
+            );
+        } catch(InvalidFormatException $ex) {
+            $this->addErrorToLog("An InvalidFormat Exception has occured", $ex);
+            $httpCode = 400;
+            $message = $ex->getMessage();
+        } catch(\Exception $ex) {
+            $this->addErrorToLog("An Unknown Exception has occured", $ex);
+            $httpCode = 500;
+            $message = "An unknown error has occured, please try again later";
+        }
+        
+        return $this->apiOutput(
+            array(
+                "status"    =>  $httpCode,
+                "message"   =>  $message,
+                "data"      =>  $data
+            ),
+            $httpCode
+        );
     }
     
     /**
