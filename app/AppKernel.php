@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Demo\IdServicesBundle\IdServicesBundle(),
+            new Demo\FrontEndBundle\FrontEndBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
