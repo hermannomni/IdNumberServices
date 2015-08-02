@@ -5,7 +5,7 @@ namespace Demo\FrontEndBundle\Entity;
 use Demo\FrontEndBundle\Lib\Classes\Utils\Utils;
 use Demo\FrontEndBundle\Lib\Exceptions\MalformatedResponseException;
 
-class SaIdNumberServiceClient
+class IdNumberServiceClient
 {
     const GENERATE_ID_NUMBER_ACTION = "api/generateIdNumber";
     const CHECK_ID_NUMBER_ACTION = "api/checkIdNumber";
@@ -20,7 +20,7 @@ class SaIdNumberServiceClient
     {
         $requestUrl = sprintf("%s/%s/%s/%s/%s", $this->hostUrl, self::GENERATE_ID_NUMBER_ACTION,
                                 urlencode($dateOfBirth), urlencode($gender), urlencode($origin));
-        $rawResponse = Utils::httpRequests($requestUrl);
+        $rawResponse = Utils::httpRequests($requestUrl, array(), "GET");
         
         return $this->decodeServerResponse($rawResponse);
     }
@@ -42,12 +42,13 @@ class SaIdNumberServiceClient
     private function decodeServerResponse($rawResponse)
     {
         $response = json_decode($rawResponse, true);
-        if (!is_array($response) || !isset($response["status"]) || $response["message"]
-                || $response["data"]){
+        if (!is_array($response) || !isset($response["status"]) || !isset($response["message"])
+                || !isset($response["data"])){
             throw new MalformatedResponseException("An error occured while decoding the data from the server",
                         array(
                             "rawResponse"   =>  $rawResponse
-                        ));
+                        )
+            );
         }
         
         return $response;
