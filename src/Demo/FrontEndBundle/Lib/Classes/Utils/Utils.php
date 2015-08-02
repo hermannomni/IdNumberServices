@@ -2,9 +2,11 @@
 
 namespace Demo\FrontEndBundle\Lib\Classes\Utils;
 
-class Utils
+use Demo\FrontEndBundle\Lib\Interfaces\UtilsInterface;
+
+class Utils implements UtilsInterface
 {
-    public static function httpRequests($requestUrl, $params = array(), $method = "post")
+    public function httpRequests($requestUrl, $params = array(), $method = "post")
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $requestUrl);

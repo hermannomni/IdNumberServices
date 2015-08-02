@@ -2,17 +2,19 @@
 
 namespace Demo\FrontEndBundle\Entity;
 
-use Demo\FrontEndBundle\Lib\Classes\Utils\Utils;
+use Demo\FrontEndBundle\Lib\Interfaces\UtilsInterface;
 use Demo\FrontEndBundle\Lib\Exceptions\MalformatedResponseException;
 
 class IdNumberServiceClient
 {
     const GENERATE_ID_NUMBER_ACTION = "api/generateIdNumber";
     const CHECK_ID_NUMBER_ACTION = "api/checkIdNumber";
+    private $utils;
     private $hostUrl;
     
-    public function __construct($protocol, $host)
+    public function __construct(UtilsInterface $utils, $protocol, $host)
     {
+        $this->utils = $utils;
         $this->hostUrl = sprintf("%s%s", $protocol, $host);
     }
     
@@ -20,7 +22,7 @@ class IdNumberServiceClient
     {
         $requestUrl = sprintf("%s/%s/%s/%s/%s", $this->hostUrl, self::GENERATE_ID_NUMBER_ACTION,
                                 urlencode($dateOfBirth), urlencode($gender), urlencode($origin));
-        $rawResponse = Utils::httpRequests($requestUrl, array(), "GET");
+        $rawResponse = $this->utils->httpRequests($requestUrl, array(), "GET");
         
         return $this->decodeServerResponse($rawResponse);
     }
@@ -34,7 +36,7 @@ class IdNumberServiceClient
             "origin"        =>  $origin
         );
         $requestUrl = sprintf("%s/%s", $this->hostUrl, self::CHECK_ID_NUMBER_ACTION);
-        $rawResponse = Utils::httpRequests($requestUrl, $params);
+        $rawResponse = $this->utils->httpRequests($requestUrl, $params);
         
         return $this->decodeServerResponse($rawResponse);
     }

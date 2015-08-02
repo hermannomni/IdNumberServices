@@ -4,7 +4,7 @@ namespace Demo\IdServicesBundle\Lib\Classes\SaIdNumberGenerator;
 
 use Demo\IdServicesBundle\Lib\Interfaces\IdNumberGeneratorInterface;
 use Demo\IdServicesBundle\Lib\Exceptions\InvalidFormatException;
-use Demo\IdServicesBundle\Lib\Classes\Utils\Utils;
+use Demo\IdServicesBundle\Lib\Interfaces\UtilsInterface;
 
 class SaIdNumberGenerator implements IdNumberGeneratorInterface
 {
@@ -14,14 +14,16 @@ class SaIdNumberGenerator implements IdNumberGeneratorInterface
     private $origin;
     private $racialIdentifier;
     private $checkBit;
+    private $utils;
     
     /**
      * The constructor of the SaIdNumberGenerator Class
      * @param string $dateOfBirth The provided date of birth
      * @throws InvalidFormatException In case invalid parameter are provided
      */
-    public function __construct($dateOfBirth)
+    public function __construct(UtilsInterface $utils, $dateOfBirth)
     {
+        $this->utils = $utils;
         $this->dateOfBirth = $dateOfBirth;
         $this->checkDateOfBirth();
     }
@@ -54,7 +56,7 @@ class SaIdNumberGenerator implements IdNumberGeneratorInterface
     {
         $data = sprintf("%s%s%s%s", $this->dateOfBirth, $this->gender,
                             $this->origin, $this->racialIdentifier);
-        $this->checkBit = Utils::generateCheckBit($data);
+        $this->checkBit = $this->utils->generateCheckBit($data);
     }
     
     /**
