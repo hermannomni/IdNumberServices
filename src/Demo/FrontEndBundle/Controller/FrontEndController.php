@@ -8,6 +8,7 @@ use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Demo\FrontEndBundle\Lib\Exceptions\MalformatedResponseException;
+use Demo\FrontEndBundle\Lib\Classes\Utils\Utils;
 
 class FrontEndController extends Controller
 {
@@ -26,10 +27,12 @@ class FrontEndController extends Controller
         $gender = $request->get("gender");
         $origin = $request->get("origin");
         
-        $IdNumberServiceClient = new IdNumberServiceClient($protocol, $httpHost);
+        $utils = new Utils();
+        
+        $idNumberServiceClient = new IdNumberServiceClient($utils, $protocol, $httpHost);
         
         try{
-            $results = $IdNumberServiceClient->generateIdNumber($dateOfBirth, $gender, $origin);
+            $results = $idNumberServiceClient->generateIdNumber($dateOfBirth, $gender, $origin);
         } catch(MalformatedResponseException $ex) {
             $this->addErrorToLog("A Malformated Response Exception has occured", $ex);
             $results = array(
@@ -53,10 +56,12 @@ class FrontEndController extends Controller
         $gender = $request->get("gender");
         $origin = $request->get("origin");
         
-        $IdNumberServiceClient = new IdNumberServiceClient($protocol, $httpHost);
+        $utils = new Utils();
+        
+        $idNumberServiceClient = new IdNumberServiceClient($utils, $protocol, $httpHost);
         
         try{
-            $results = $IdNumberServiceClient->checkIdNumber($idNumber, $dateOfBirth, $gender, $origin);
+            $results = $idNumberServiceClient->checkIdNumber($idNumber, $dateOfBirth, $gender, $origin);
         } catch(MalformatedResponseException $ex) {
             $this->addErrorToLog("A Malformated Response Exception has occured", $ex);
             $results = array(

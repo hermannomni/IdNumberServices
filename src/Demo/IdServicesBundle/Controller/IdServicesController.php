@@ -12,6 +12,7 @@ use Demo\IdServicesBundle\Lib\Exceptions\InvalidFormatException;
 use Demo\IdServicesBundle\Lib\Exceptions\IdValidationException;
 use Demo\IdServicesBundle\Lib\Classes\SaIdNumberValidator\SaIdNumberValidator;
 use Demo\IdServicesBundle\Lib\Classes\SaIdNumberGenerator\SaIdNumberGenerator;
+use Demo\IdServicesBundle\Lib\Classes\Utils\Utils;
 
 class IdServicesController extends Controller
 {
@@ -36,8 +37,10 @@ class IdServicesController extends Controller
     {
         $data = array();
         
+        $utils = new Utils();
+        
         try{
-            $saIdNumberGenerator = new SaIdNumberGenerator($dateOfBirth);
+            $saIdNumberGenerator = new SaIdNumberGenerator($utils, $dateOfBirth);
             $idNumber = $saIdNumberGenerator->generateIdNumber($gender, $origin);
             $httpCode = 200;
             $message = "The ID number has been generated successfully";
@@ -91,8 +94,10 @@ class IdServicesController extends Controller
         $origin = $request->get("origin");
         $data = array();
         
+        $utils = new Utils();
+        
         try{
-            $saIdNumberValidator = new SaIdNumberValidator($idNumber);
+            $saIdNumberValidator = new SaIdNumberValidator($utils, $idNumber);
             $saIdNumberValidator->checkIdNumber($dateOfBirth, $gender, $origin);
             $httpCode = 200;
             $message = "The ID number and the details provided matches";

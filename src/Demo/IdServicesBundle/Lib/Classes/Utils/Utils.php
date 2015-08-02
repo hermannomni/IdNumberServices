@@ -2,13 +2,15 @@
 
 namespace Demo\IdServicesBundle\Lib\Classes\Utils;
 
-class Utils
+use Demo\IdServicesBundle\Lib\Interfaces\UtilsInterface;
+
+class Utils implements UtilsInterface
 {
     /**
      * Computes the check bit of an ID number
      * @param string $idNumber The ID number that will be used to compute the check bit
      */
-    public static function generateCheckBit($idNumber)
+    public function generateCheckBit($idNumber)
     {
         $a = 0;
         for ($i = 0; $i < 6; $i++){

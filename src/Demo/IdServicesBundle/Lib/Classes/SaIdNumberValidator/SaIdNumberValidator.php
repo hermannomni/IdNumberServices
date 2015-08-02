@@ -5,7 +5,7 @@ namespace Demo\IdServicesBundle\Lib\Classes\SaIdNumberValidator;
 use Demo\IdServicesBundle\Lib\Interfaces\IdNumberValidatorInterface;
 use Demo\IdServicesBundle\Lib\Exceptions\InvalidFormatException;
 use Demo\IdServicesBundle\Lib\Exceptions\IdValidationException;
-use Demo\IdServicesBundle\Lib\Classes\Utils\Utils;
+use Demo\IdServicesBundle\Lib\Interfaces\UtilsInterface;
 
 
 class SaIdNumberValidator implements IdNumberValidatorInterface
@@ -16,6 +16,7 @@ class SaIdNumberValidator implements IdNumberValidatorInterface
     private $origin;
     private $racialIdentifier;
     private $checkBit;
+    private $utils;
     
     /**
      * The constructor of the SaIdNumberValidator Class
@@ -23,8 +24,9 @@ class SaIdNumberValidator implements IdNumberValidatorInterface
      * @throws InvalidFormatException In case invalid parameter are provided
      * @throws IdValidationException In case we encouter an issue while validating the ID number against the provided data
      */
-    public function __construct($idNumber)
+    public function __construct(UtilsInterface $utils, $idNumber)
     {
+        $this->utils = $utils;
         if (strlen($idNumber) == 13 && preg_match(self::ID_NUMBER_REG_EXP, $idNumber)){
             $this->dateOfBirth = substr($idNumber, 0, 6);
             $this->gender = substr($idNumber, 6, 4);
@@ -55,9 +57,9 @@ class SaIdNumberValidator implements IdNumberValidatorInterface
      */
     public function checkIdNumber($dateOfBirth, $gender, $origin)
     {
+        $this->checkDateOfBirth($dateOfBirth);
         $this->checkGenderInput($gender);
         $this->checkOriginInput($origin);
-        $this->checkDateOfBirth($dateOfBirth);
         $this->checkGender($gender);
         $this->checkOrigin($origin);
     }
@@ -138,7 +140,7 @@ class SaIdNumberValidator implements IdNumberValidatorInterface
      */
     private function validateIdNumberCheckBit($idNumber)
     {
-        $computedCheckBit = Utils::generateCheckBit($idNumber);
+        $computedCheckBit = $this->utils->generateCheckBit($idNumber);
         if ($computedCheckBit !== intval($this->checkBit)){
             throw new InvalidFormatException("The check bit section of the ID number does not verify the data in the ID number",
                 array(
