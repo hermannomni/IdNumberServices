@@ -18,5 +18,5 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
     
-    protocol: http://
-    http_host: local.IdNumberServices
+    protocol: "http://"
+    http_host: "local.IdNumberServices"
