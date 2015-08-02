@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ID service front end</title>
+    {% stylesheets filter='cssrewrite'
+        "bundles/frontend/css/jquery-ui-smoothness.css"
+        "bundles/frontend/css/jquery-ui.css"
+        "bundles/frontend/css/style.css"
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+</head>
+<body>
+
+    <h1>Please select one of the options below</h1>
+
+    <div id="accordion">
+        <h2>I would like to generate an ID number using my details</h2>
+        <form id = "formGenerateIdNumber" method = "GET" class = "form">
+            <div class="field">
+                <label for="dateOfBirthGenerate">Date of Birth (yymmdd)</label>
+                <input type="text" id="dateOfBirthGenerate" name="dateOfBirth" pattern="^\d{6}$" placeholder="Date of Birth" required />
+            </div>
+            <div class="field">
+                <label for="genderGenerate">Gender</label>
+                <select id="genderGenerate" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="origin">Origin</label>
+                <select id="origin" name="origin" required>
+                    <option value="local">Local</option>
+                    <option value="foreign">Foreign</option>
+                </select>
+            </div>
+            <div class="field" id = "divBtnGenerateId">
+                <input type = "submit" value = "Generate ID Number" />
+            </div>
+            <div id = "divBtnGenerateIdWaiting" class = "center hidden">
+                <img src = "{{asset('bundles/frontend/images/waiting.gif')}}" />
+            </div>
+        </form>
+        <h2>I would like to check my details against my ID number</h2>
+        <form id = "formCheckIdNumber" method = "POST" class = "form">
+            <div class="field">
+                <label for="idNumberCheck">ID Number</label>
+                <input type="text" id="idNumberCheck" name="idNumber" pattern="^\d{13}$" placeholder="ID Number" required />
+            </div>
+            <div class="field">
+                <label for="dateOfBirthCheck">Date of Birth (yymmdd)</label>
+                <input type="text" id="dateOfBirthCheck" name="dateOfBirth" pattern="^\d{6}$" placeholder="Date of Birth" required />
+            </div>
+            <div class="field">
+                <label for="genderCheck">Gender</label>
+                <select id="genderCheck" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="originCheck">Origin</label>
+                <select id="originCheck" name="origin" required>
+                    <option value="local">Local</option>
+                    <option value="foreign">Foreign</option>
+                </select>
+            </div>
+            <div class="field" id = "divBtnCheckId">
+                <input type = "submit" value = "Check ID Number" />
+            </div>
+            <div id = "divBtnCheckIdWaiting" class = "center hidden">
+                <img src = "{{asset('bundles/frontend/images/waiting.gif')}}" />
+            </div>
+        </form>
+    </div>
+    
+    <div id="successBox" class = "dialog" title="Operation successful">
+        <img src = "{{asset('bundles/frontend/images/success.png')}}" />
+        <p id = "successBoxMessage"></p>
+    </div>
+    <div id="warningBox" class = "dialog" title="Warning">
+        <img src = "{{asset('bundles/frontend/images/warning.png')}}" />
+        <p id = "warningBoxMessage"></p>
+    </div>
+    <div id="errorBox" class = "dialog" title="Error">
+        <img src = "{{asset('bundles/frontend/images/error.png')}}" />
+        <p id = "errorBoxMessage"></p>
+    </div>
+    
+    <script>
+        var generateIdNumberUrl = "{{path("front_end_generate_id_number")}}";
+        var checkIdNumberUrl = "{{path("front_end_check_id_number")}}";
+    </script>
+    
+    {% javascripts
+        "@FrontEndBundle/Resources/public/js/jquery-1.10.2.js"
+        "@FrontEndBundle/Resources/public/js/jquery-ui.js"
+        "@FrontEndBundle/Resources/public/js/script.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    </head>
+</body>
+</html>

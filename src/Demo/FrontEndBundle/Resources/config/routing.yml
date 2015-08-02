@@ -1,0 +1,13 @@
+front_end_homepage:
+    path:     /frontEnd
+    defaults: { _controller: FrontEndBundle:FrontEnd:index }
+
+front_end_generate_id_number:
+    path:     /apiClient/generateIdNumber
+    methods: [GET]
+    defaults: { _controller: FrontEndBundle:FrontEnd:generateIdNumber }
+
+front_end_check_id_number:
+    path:     /apiClient/checkIdNumber
+    methods: [POST]
+    defaults: { _controller: FrontEndBundle:FrontEnd:checkIdNumber }
